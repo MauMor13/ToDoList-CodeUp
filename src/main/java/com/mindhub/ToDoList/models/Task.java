@@ -23,7 +23,7 @@ public class Task {
 
     private String description;
 
-    private TaskStatus status;
+    private TaskStatus status = TaskStatus.PENDING;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

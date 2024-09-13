@@ -8,4 +8,8 @@ public interface ServiceUser {
     ResponseEntity<Object> newUser (NewUserDTO user);
 
     ResponseEntity<Object> getUser(long id);
+
+    ResponseEntity<Object> getUsers();
+
+    ResponseEntity<Object> patchUser(Long id, String email, String password, String userName);
 }

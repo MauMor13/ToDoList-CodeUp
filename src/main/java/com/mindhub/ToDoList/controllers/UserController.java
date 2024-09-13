@@ -25,4 +25,17 @@ public class UserController {
         return serviceUser.getUser(id);
     }
 
+    @GetMapping("/getUsers")
+    public ResponseEntity<Object> getUsers (){
+        return serviceUser.getUsers();
+    }
+
+    @PatchMapping("/patch_user")
+    public ResponseEntity<Object> patchUser(@RequestParam(required = true) Long id,
+                                            @RequestParam(required = false) String email,
+                                            @RequestParam(required = false) String password,
+                                            @RequestParam(required = false) String userName){
+        return serviceUser.patchUser(id, email, password, userName);
+    }
+
 }
