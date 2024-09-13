@@ -32,4 +32,9 @@ public class UserEntity {
         this.email = email;
         this.password = password;
     }
+
+    public void addTask(Task task){
+        task.setUserEntity(this);
+        this.tasks.add(task);
+    }
 }
