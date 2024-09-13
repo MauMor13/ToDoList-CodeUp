@@ -1,3 +1,3 @@
 package com.mindhub.ToDoList.DTOs;
 
-public record UserDTO(long id, String userName, String email){ }
+public record NewUserDTO(String userName, String email, String password){ }
