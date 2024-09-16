@@ -17,6 +17,8 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private boolean active = true;
+
     @NotNull
     @NotBlank
     private String title;
