@@ -29,9 +29,8 @@ public class Task {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
-    public Task(String title, String description, TaskStatus status) {
+    public Task(String title, String description) {
         this.title = title;
         this.description = description;
-        this.status = status;
     }
 }
