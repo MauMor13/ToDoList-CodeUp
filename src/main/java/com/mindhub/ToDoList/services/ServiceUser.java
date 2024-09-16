@@ -12,4 +12,6 @@ public interface ServiceUser {
     ResponseEntity<Object> getUsers();
 
     ResponseEntity<Object> patchUser(Long id, String email, String password, String userName);
+
+    ResponseEntity<Object> deleteUser(Long id);
 }

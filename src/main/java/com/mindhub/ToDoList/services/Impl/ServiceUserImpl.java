@@ -43,15 +43,16 @@ public class ServiceUserImpl implements ServiceUser {
 
         Optional<UserEntity> user = repositoryUser.findById(id);
 
-        return user.<ResponseEntity<Object>>map(userEntity -> new ResponseEntity<>(userEntity, HttpStatus.OK))
-                        .orElseGet(() -> new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND));
+        if (user.isPresent() && user.get().isActive())
+            return new ResponseEntity<>(new UserDTO(user.get()), HttpStatus.OK);
 
+        return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
     }
 
     @Override
     public ResponseEntity<Object> getUsers() {
 
-        List<UserDTO> userDTOS = repositoryUser.findAll().stream().map( UserDTO::new).toList();
+        List<UserDTO> userDTOS = repositoryUser.findAll().stream().filter(UserEntity::isActive).map( UserDTO::new).toList();
 
         if (userDTOS.isEmpty())
             return new ResponseEntity<>("no item found", HttpStatus.NO_CONTENT);
@@ -62,12 +63,50 @@ public class ServiceUserImpl implements ServiceUser {
     @Override
     public ResponseEntity<Object> patchUser(Long id, String email, String password, String userName) {
 
-        Optional<UserEntity> user = repositoryUser.findById(id);
+       Optional<UserEntity> user = repositoryUser.findById(id);
+        String message = "Changes: \n";
 
-        if (user.isEmpty())
+        if (user.isEmpty() || !user.get().isActive())
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<>("", HttpStatus.OK);
+        if (!email.isEmpty()){
+            user.get().setEmail(email);
+            message = message.concat("* Successful email \n");
+        }
+
+        if (!password.isEmpty()){
+            if (isValidPassword(password)){
+                user.get().setPassword(password);
+                message = message.concat("* Successful password change \n");
+            }
+            else
+                message = message.concat("* Invalid password, include a capital letter, a number or special digit, it must be greater than six characters \n");
+        }
+
+        if (!userName.isEmpty()){
+            user.get().setUserName(userName);
+            message = message.concat("* Successful user name change \n");
+        }
+
+        repositoryUser.save(user.get());
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Object> deleteUser(Long id) {
+
+        Optional<UserEntity> user = repositoryUser.findById(id);
+
+        if (user.isEmpty() || !user.get().isActive())
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+
+        user.get().setActive(false);
+
+        repositoryUser.save(user.get());
+
+        return new ResponseEntity<>("Delete successful the user", HttpStatus.OK);
+    }
+
 
 }

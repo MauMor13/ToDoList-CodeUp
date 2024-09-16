@@ -38,4 +38,9 @@ public class UserController {
         return serviceUser.patchUser(id, email, password, userName);
     }
 
+    @DeleteMapping("/delete_user")
+    public ResponseEntity<Object> deleteUser (@RequestParam(required = true) Long id){
+        return serviceUser.deleteUser(id);
+    }
+
 }
