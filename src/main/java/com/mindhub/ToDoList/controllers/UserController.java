@@ -25,7 +25,7 @@ public class UserController {
         return serviceUser.getUser(id);
     }
 
-    @GetMapping("/getUsers")
+    @GetMapping("/get_users")
     public ResponseEntity<Object> getUsers (){
         return serviceUser.getUsers();
     }
